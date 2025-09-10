@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  openhands:
+    image: ghcr.io/all-hands-ai/openhands:0.14.2
+    container_name: openhands_runtime
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./workspace:/opt/workspace_base
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/all-hands-ai/runtime:0.14.2-nikolaik
+      - SANDBOX_USER_ID=${SANDBOX_USER_ID:-1000}
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+      - LLM_MODEL=${LLM_MODEL:-gpt-4}
+      - LLM_API_KEY=${LLM_API_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  orchestrator:
+    build:
+      context: ./orchestrator
+    container_name: langgraph_orchestrator
+    volumes:
+      - ./orchestrator:/app
+      - ./workspace:/workspace 
+    depends_on:
+      - openhands
+    tty: true
+
+volumes:
+  workspace:
+
