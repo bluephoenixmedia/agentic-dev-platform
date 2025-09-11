@@ -1,21 +1,16 @@
 {
-  "name": "Agentic Platform Dev Container",
-  "dockerComposeFile": [
-    "../docker-compose.yml"
-  ],
-  "service": "openhands",
-  "workspaceFolder": "/opt/workspace_base",
-  "forwardPorts": [
-    3000
-  ],
+  "name": "Agentic Platform Orchestrator",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "orchestrator",
+  "workspaceFolder": "/workspaces/agentic-dev-platform",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "ms-python.vscode-pylance",
         "ms-azuretools.vscode-docker"
       ]
     }
-  },
-  "postCreateCommand": ""
+  }
 }
 

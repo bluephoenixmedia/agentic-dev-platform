@@ -1,0 +1,25 @@
+--- General ---
+Python cache files
+pycache/
+*.pyc
+
+--- Environment ---
+Ignore the file containing secret keys
+.env
+
+--- Docker ---
+Ignore Docker build context files
+.dockerignore
+
+--- VSCode ---
+Ignore workspace settings
+.vscode/
+
+--- LangGraph ---
+Ignore the SQLite database file
+state.db*
+
+--- Logs ---
+Ignore our run logs
+*.log
+run_log.txt

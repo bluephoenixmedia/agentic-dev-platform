@@ -1,6 +1,6 @@
-version: '3.8'
-
+# This file defines the services, networks, and volumes for our multi-container Docker application.
 services:
+  # The OpenHands service provides the sandboxed execution environment for our agents.
   openhands:
     image: ghcr.io/all-hands-ai/openhands:0.14.2
     container_name: openhands_runtime
@@ -15,20 +15,26 @@ services:
       - SANDBOX_USER_ID=${SANDBOX_USER_ID:-1000}
       - WORKSPACE_MOUNT_PATH=/opt/workspace_base
       - LLM_MODEL=${LLM_MODEL:-gpt-4}
-      - LLM_API_KEY=${LLM_API_KEY}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # The orchestrator service runs our main LangGraph Python application.
   orchestrator:
     build:
-      context: ./orchestrator
+      context: .
+      dockerfile: orchestrator/Dockerfile
     container_name: langgraph_orchestrator
+    # The env_file directive tells Docker Compose to load environment variables from the .env file.
+    env_file:
+      - .env
     volumes:
-      - ./orchestrator:/app
-      - ./workspace:/workspace 
+      # Mount the entire project directory into the container for easy access to all files.
+      - .:/workspaces/agentic-dev-platform
     depends_on:
       - openhands
+    # Keep the container running in the background.
     tty: true
+    stdin_open: true
 
 volumes:
   workspace:
