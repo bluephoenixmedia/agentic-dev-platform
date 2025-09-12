@@ -1,39 +1,99 @@
 Agentic Developer Platform
-This project is an implementation of a multi-agent, design-doc-first developer platform based on the concepts outlined in the Agentic Developer Platform Design Document.
+This project implements a multi-agent, design-doc-first developer platform that automates software development tasks. It uses Google's Gemini LLM for intelligent planning and execution, orchestrated by LangGraph, within a secure Dockerized environment managed by OpenHands.
 
-It uses LangGraph to orchestrate a team of specialized AI agents and OpenHands as a sandboxed execution environment for code generation, testing, and other development tasks.
+High-Level Architecture
+The system is composed of two primary Docker services: an orchestrator that manages the agent workflow, and an openhands runtime that provides a sandboxed environment for file manipulation and command execution. The Coder and Planner agents within the orchestrator connect to the Gemini LLM to generate roadmaps and implementation plans.
+
+graph TD
+    subgraph "Development Environment (Local Machine)"
+        A[User] -- Manages & Approves --> VSC[VS Code Dev Container]
+        VSC -- Runs inside --> O[Orchestrator Container]
+        O -- Executes --> GS[graph_skeleton.py]
+    end
+
+    subgraph "Docker Services (via docker-compose)"
+        O -- Python Docker SDK --> D[Docker Socket]
+        D -- Executes commands in --> OH[OpenHands Container]
+        OH -- Mounts --> W[Workspace Volume]
+    end
+    
+    subgraph "Agent Workflow (LangGraph in Orchestrator)"
+        LG_Start[Start] --> DocAgent
+        DocAgent --> Planner
+        Planner -- design_doc --> Gemini[Google Gemini LLM]
+        Gemini -- roadmap --> Planner
+        Planner --> Architect
+        Architect --> Coder
+        Coder -- task --> Gemini
+        Gemini -- implementation_plan --> Coder
+        Coder -- run_shell --> OH
+        OH -- output --> Coder
+        Coder --> Tester
+        Tester --> CICD
+        CICD --> Loop{Continue?}
+        Loop -- Yes --> Architect
+        Loop -- No --> LG_End[End]
+    end
+
+    style VSC fill:#007ACC,color:#fff
+    style Gemini fill:#4285F4,color:#fff
+    style OH fill:#f6ae2d,color:#333
 
 Prerequisites
-Before you begin, ensure you have the following installed on your local machine:
+Docker Desktop: Ensure the Docker engine is running.
 
-Docker Desktop: To build and run the containerized services.
+VS Code: The recommended IDE for this project.
 
-Visual Studio Code: As the primary IDE.
+VS Code Dev Containers Extension: For a seamless, containerized development experience.
 
-VS Code Dev Containers Extension: For connecting the IDE to the running Docker containers. You can install it from the VS Code Marketplace.
+Google Gemini API Key: You can generate a free key from Google AI Studio.
 
 Getting Started
-1. Clone the Repository
-Clone this repository to your local machine.
+1. Configure Your Environment
+Clone the Repository: Download this project to your local machine.
+
+Create the Environment File: Create a file named .env in the root of the project.
+
+Add Your API Key: Add the following line to your .env file, replacing your_gemini_api_key_here with the key you generated from Google AI Studio.
+
+GOOGLE_API_KEY="your_gemini_api_key_here"
+
+Note: The .gitignore file is configured to prevent your .env file from ever being committed to the repository.
 
 2. Launch the Development Environment
-The entire development environment is containerized to ensure consistency. The easiest way to get started is to use the VS Code Dev Containers feature.
+The easiest way to get started is to use the VS Code Dev Container.
 
-Open the root folder of this project in Visual Studio Code.
+Open the Project in VS Code: Open the main agentic-dev-platform folder in VS Code.
 
-Wait for a notification to appear in the bottom-right corner prompting you to "Reopen in Container".
-
-Click the "Reopen in Container" button.
-
-VS Code will use the .devcontainer/devcontainer.json and docker-compose.yml files to build the necessary Docker images and connect your IDE session directly into the orchestrator service.
+Reopen in Container: Wait for a pop-up in the bottom-right corner and click "Reopen in Container". This will build the Docker services and connect your VS Code instance directly into the orchestrator container.
 
 3. Run the Agent Workflow
-Once your VS Code window has reloaded and is connected to the container (the bottom-left corner will be green), you can run the agent workflow.
+Once you are inside the Dev Container (the bottom-left corner of VS Code will be green), you can run the main agent script.
 
-Open a new terminal in VS Code (Terminal > New Terminal).
+Open a Terminal: Use Terminal -> New Terminal in VS Code.
 
-Run the main orchestrator script:
+Execute the Script: Run the following command in the terminal:
 
 python /workspaces/agentic-dev-platform/orchestrator/graph_skeleton.py
 
-You will see the output of each agent executing in sequence, confirming that the system is running correctly.
+4. Review the Output
+The script will execute the full multi-agent workflow. When it's complete, you can review the results:
+
+Run Log: A high-level summary of the agents' actions will be written to run_log.txt.
+
+Workspace: The implementation plans generated by the Coder agent will be saved as .md files in the workspace/ directory.
+
+Agent Roles
+DocAgent: Loads the docs/Design_Document.md to provide context for the other agents.
+
+Planner: Uses the Gemini LLM to generate a project roadmap.
+
+Architect: Selects the next available task from the roadmap.
+
+Coder: Uses the Gemini LLM to create an implementation plan and executes verification commands.
+
+Tester: Simulates running tests on the Coder's changes.
+
+CICD: Simulates a build and deployment process for completed tasks.
+
+LogAnalyst: Provides error analysis (triggered on failures).
