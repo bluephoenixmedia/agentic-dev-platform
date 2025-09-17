@@ -1,0 +1,22 @@
+--- General ---
+pycache/
+*.pyc
+
+--- Environment ---
+.env
+
+--- Docker ---
+.dockerignore
+
+--- VSCode ---
+.vscode/
+
+--- LangGraph ---
+state.db*
+
+--- Logs ---
+*.log
+run_log.txt
+
+--- Ollama ---
+ollama_data/

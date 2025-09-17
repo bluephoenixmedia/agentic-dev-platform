@@ -1,0 +1,62 @@
+# This file defines the multi-container Docker environment for the Agentic Developer Platform.
+# It should be run from the root of the project directory.
+
+services:
+  # The OpenHands service provides a sandboxed execution environment for our agents.
+  openhands:
+    image: ghcr.io/all-hands-ai/openhands:0.14.2
+    container_name: openhands_runtime
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mounts the local 'workspace' directory into the container. This is where agents do their work.
+      - ./workspace:/opt/workspace_base
+      # Mounts the Docker socket to allow OpenHands to manage other containers if needed.
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=ghcr.io/all-hands-ai/runtime:0.14.2-nikolaik
+      - SANDBOX_USER_ID=${SANDBOX_USER_ID:-1000}
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # The Orchestrator service runs our main Python script with the LangGraph agent workflow.
+  orchestrator:
+    build:
+      # The build context is the root of the project.
+      context: .
+      # Specifies the location of the Dockerfile.
+      dockerfile: ./orchestrator/Dockerfile
+    container_name: langgraph_orchestrator
+    volumes:
+      # Mounts the entire project directory into the container for easy development.
+      - .:/workspaces/agentic-dev-platform
+    depends_on:
+      - openhands
+      - ollama
+    # Ensures the container stays running and interactive.
+    tty: true
+    stdin_open: true
+    # Passes environment variables from the .env file into the container.
+    env_file:
+      - .env
+    # Explicitly defines environment variables to ensure they are available.
+    environment:
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL}
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
+      # This is the crucial variable for connecting to the Docker host from within a container.
+      - DOCKER_HOST=tcp://host.docker.internal:2375
+
+  # The Ollama service runs a local Large Language Model.
+  ollama:
+    image: ollama/ollama
+    container_name: ollama_service
+    ports:
+      - "11434:11434"
+    volumes:
+      # Persists the downloaded Ollama models to a local directory.
+      - ./ollama_data:/root/.ollama
+      # Mounts the custom Modelfile into the container.
+      - ./Modelfile:/Modelfile
+

@@ -1,0 +1,26 @@
+{
+  "name": "Agentic Platform Dev Container",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "orchestrator",
+  "workspaceFolder": "/workspaces/agentic-dev-platform",
+  "forwardPorts": [
+    3000,
+    11434
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.analysis.extraPaths": [
+          "/workspaces/agentic-dev-platform/orchestrator"
+        ]
+      }
+    }
+  },
+  "postCreateCommand": ""
+}
