@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "Agentic Platform Dev Container",
   "dockerComposeFile": [
     "../docker-compose.yml"
@@ -9,10 +10,17 @@
     3000,
     11434
   ],
+=======
+  "name": "Agentic Platform Orchestrator",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "orchestrator",
+  "workspaceFolder": "/workspaces/agentic-dev-platform",
+>>>>>>> f28eb13f1e1ef80598da7f8243f160cc6573f08d
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
+<<<<<<< HEAD
         "ms-azuretools.vscode-docker"
       ],
       "settings": {
@@ -24,3 +32,12 @@
   },
   "postCreateCommand": ""
 }
+=======
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
+
+>>>>>>> f28eb13f1e1ef80598da7f8243f160cc6573f08d

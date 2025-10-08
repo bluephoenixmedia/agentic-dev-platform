@@ -1,116 +1,95 @@
-[
-  {
-    "phase": "Phase 0: Foundations",
-    "tasks": [
-      {
-        "id": "p0-t1",
-        "title": "Setup LangGraph for Orchestration",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 0: Foundations"
-      },
-      {
-        "id": "p0-t2",
-        "title": "Set up OpenHands for Execution Workspace",
-        "kind": "ops",
-        "status": "done",
-        "phase": "Phase 0: Foundations"
-      }
-    ]
-  },
-  {
-    "phase": "Phase 1: Design Doc First Workflow",
-    "tasks": [
-      {
-        "id": "p1-t1",
-        "title": "Design and Implement Canonical Design Document",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 1: Design Doc First Workflow"
-      },
-      {
-        "id": "p1-t2",
-        "title": "Integrate LLM API Key Connection",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 1: Design Doc First Workflow"
-      }
-    ]
-  },
-  {
-    "phase": "Phase 2: Agent Roles and Prompt Modularity",
-    "tasks": [
-      {
-        "id": "p2-t1",
-        "title": "Define and Implement Role-Specialized Agents",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 2: Agent Roles and Prompt Modularity"
-      },
-      {
-        "id": "p2-t2",
-        "title": "Implement Prompt Modularity and Versioning",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 2: Agent Roles and Prompt Modularity"
-      }
-    ]
-  },
-  {
-    "phase": "Phase 3: Orchestration and Execution",
-    "tasks": [
-      {
-        "id": "p3-t1",
-        "title": "Implement Stateful Orchestration using LangGraph",
-        "kind": "tech",
-        "status": "done",
-        "phase": "Phase 3: Orchestration and Execution"
-      },
-      {
-        "id": "p3-t2",
-        "title": "Set up Execution Workspace using OpenHands",
-        "kind": "ops",
-        "status": "done",
-        "phase": "Phase 3: Orchestration and Execution"
-      }
-    ]
-  },
-  {
-    "phase": "Phase 4: Security, Auditability, and Governance",
-    "tasks": [
-      {
-        "id": "p4-t1",
-        "title": "Implement Human Gates for Destructive or Externally Visible Actions",
-        "kind": "sec",
-        "status": "done",
-        "phase": "Phase 4: Security, Auditability, and Governance"
-      },
-      {
-        "id": "p4-t2",
-        "title": "Configure Audit Logs and Minimal Secrets Exposure",
-        "kind": "sec",
-        "status": "done",
-        "phase": "Phase 4: Security, Auditability, and Governance"
-      }
-    ]
-  },
-  {
-    "phase": "Phase 5: Measurable Performance Tracking",
-    "tasks": [
-      {
-        "id": "p5-t1",
-        "title": "Set up Cycle Time, Test Pass Rate, and PR Acceptance Rate Tracking",
-        "kind": "ops",
-        "status": "done",
-        "phase": "Phase 5: Measurable Performance Tracking"
-      },
-      {
-        "id": "p5-t2",
-        "title": "Track Incident Rate and Escape Defects",
-        "kind": "ops",
-        "status": "done",
-        "phase": "Phase 5: Measurable Performance Tracking"
-      }
-    ]
-  }
-]
+{
+  "phases": [
+    {
+      "phase": "Phase 0: Foundations",
+      "tasks": [
+        {
+          "id": "p0-t1",
+          "title": "Setup LangGraph for Orchestration",
+          "kind": "ops",
+          "status": "done"
+        },
+        {
+          "id": "p0-t2",
+          "title": "Integrate OpenHands for Execution Workspace",
+          "kind": "integration",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "phase": "Phase 1: Agent Development",
+      "tasks": [
+        {
+          "id": "p1-t1",
+          "title": "Develop Documentation Agent",
+          "kind": "development",
+          "status": "done"
+        },
+        {
+          "id": "p1-t2",
+          "title": "Develop Planning Agent",
+          "kind": "development",
+          "status": "done"
+        },
+        {
+          "id": "p1-t3",
+          "title": "Develop Architecture Agent",
+          "kind": "development",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "phase": "Phase 2: Orchestration and Execution",
+      "tasks": [
+        {
+          "id": "p2-t1",
+          "title": "Implement Deterministic, Resumable Orchestration",
+          "kind": "development",
+          "status": "done"
+        },
+        {
+          "id": "p2-t2",
+          "title": "Integrate Sandboxed Execution with Shared Mount",
+          "kind": "integration",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "phase": "Phase 3: Security, Auditability, and Governance",
+      "tasks": [
+        {
+          "id": "p3-t1",
+          "title": "Implement Human Gates for Destructive or Externally Visible Actions",
+          "kind": "development",
+          "status": "done"
+        },
+        {
+          "id": "p3-t2",
+          "title": "Set up Audit Logs and Minimal Secrets Exposure",
+          "kind": "integration",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "phase": "Phase 4: Measurable Performance",
+      "tasks": [
+        {
+          "id": "p4-t1",
+          "title": "Track Cycle Time, Test Pass Rate, and PR Acceptance Rate",
+          "kind": "development",
+          "status": "done"
+        },
+        {
+          "id": "p4-t2",
+          "title": "Monitor Incident Rate and Escape Defects",
+          "kind": "integration",
+          "status": "done"
+        }
+      ]
+    }
+  ]
+}
